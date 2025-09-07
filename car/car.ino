@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
-Servo servoNeck;
-Servo servoArm;
+Servo servo1;
+Servo servo2;
 
 // car
 #define IN1 2
@@ -10,8 +10,8 @@ Servo servoArm;
 #define IN3 4
 #define IN4 5
 //crane
-#define SM1 7  // Servo neck
-#define SML 8  // Servo arm
+#define SM1 7  // Servo 1
+#define SML 8  // Servo 2
 
 SoftwareSerial bt(11, 10);  // RX, TX
 
@@ -22,6 +22,11 @@ SoftwareSerial bt(11, 10);  // RX, TX
 bool isDebug = true;
 
 char data;
+
+int eje1 = 90;
+int eje2 = 90;
+int maxOpen = 45;
+int maxDown = 45;
 
 void setup() {
   if (isDebug) {
@@ -41,6 +46,12 @@ void setup() {
   //analogWrite(EN1,63);
   //analogWrite(EN2,63);
   bt.begin(9600);
+
+  servo1.attach(SM1);
+  servo2.attach(SML);
+
+  stopCar();
+  resetServos();
 }
 
 
@@ -68,7 +79,37 @@ void loop() {
         right();
         break;
       case 'S':
-        stoprobot();
+        stopCar();
+        break;
+      // servo 1
+      case 'D':
+        if (eje1 < 90 + maxOpen) {
+          eje1++;
+          log(String(eje1));
+          servo1.write(eje1);
+        }
+        break;
+      case 'I':
+        if (eje1 > 90 - maxOpen) {
+          eje1--;
+          log(String(eje1));
+          servo1.write(eje1);
+        }
+        break;
+      // servo 1
+      case 'G':
+        if (eje2 < 90 + maxDown) {
+          eje2++;
+          log(String(eje2));
+          servo1.write(eje2);
+        }
+        break;
+      case 'H':
+        if (eje2 > 90 - maxDown) {
+          eje2--;
+          log(String(eje2));
+          servo1.write(eje2);
+        }
         break;
     }
   }
@@ -83,6 +124,8 @@ void log(String msg) {
     Serial.println(msg);
   }
 }
+
+// Car
 
 void forward() {
   log("forward");
@@ -120,11 +163,20 @@ void right() {
   delay(20);
 }
 
-void stoprobot() {
+void stopCar() {
   log("stop");
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, LOW);
   delay(20);
+}
+
+// Crane
+
+void resetServos() {
+  log("resetServos");
+  servo1.write(90);
+  servo2.write(90);
+  delay(100);
 }
