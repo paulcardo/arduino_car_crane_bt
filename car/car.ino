@@ -26,7 +26,7 @@ char data;
 int eje1 = 90;
 int eje2 = 90;
 int maxOpen = 45;
-int maxDown = 45;
+int maxDown = 40;
 
 void setup() {
   if (isDebug) {
@@ -96,19 +96,19 @@ void loop() {
           servo1.write(eje1);
         }
         break;
-      // servo 1
+      // servo 2
       case 'G':
         if (eje2 < 90 + maxDown) {
           eje2++;
           log(String(eje2));
-          servo1.write(eje2);
+          servo2.write(eje2);
         }
         break;
       case 'H':
         if (eje2 > 90 - maxDown) {
           eje2--;
           log(String(eje2));
-          servo1.write(eje2);
+          servo2.write(eje2);
         }
         break;
     }
