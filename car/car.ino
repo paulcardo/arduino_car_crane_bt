@@ -1,17 +1,33 @@
 #include <SoftwareSerial.h>
+#include <Servo.h>
+
+Servo servoNeck;
+Servo servoArm;
+
+// car
 #define IN1 2
 #define IN2 3
 #define IN3 4
 #define IN4 5
-//#define EN1 6
-//#define EN2 5
+//crane
+#define SM1 7  // Servo neck
+#define SML 8  // Servo arm
 
 SoftwareSerial bt(11, 10);  // RX, TX
+
+/***********************  D E B U G  ****************************/
+// "true" when is Debug, it must show logs in the Serial Monitor.
+// "false" when is production.
+/****************************************************************/
+bool isDebug = true;
 
 char data;
 
 void setup() {
-  Serial.begin(9600);
+  if (isDebug) {
+    Serial.begin(9600);
+    Serial.println("Hi Setup");
+  }
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -28,53 +44,48 @@ void setup() {
 }
 
 
-
-void loop()
-
-{
+void loop() {
   while (bt.available()) {
     {
       data = bt.read();
-      Serial.println(data);
+      if (isDebug) {
+        Serial.println(data);
+      }
     }
 
-
     switch (data) {
+      // car
       case 'F':
-        //Serial.println("Forward");
         forward();
         break;
-
-
       case 'B':
-        //Serial.println("Reverse");
         reverse();
         break;
-
-
       case 'L':
-        //Serial.println("Left");
         left();
         break;
       case 'R':
-        //Serial.println("Right");
         right();
         break;
-
-
       case 'S':
-        //Serial.println("Stop");
         stoprobot();
         break;
     }
   }
   if (bt.available() < 0) {
-    //Serial.println("No Bluetooth Data ");
+    log("No Bluetooth Data ");
   }
   delay(100);
 }
 
+void log(String msg) {
+  if (isDebug) {
+    Serial.println(msg);
+  }
+}
+
 void forward() {
+  log("forward");
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
@@ -83,6 +94,7 @@ void forward() {
 }
 
 void reverse() {
+  log("reverse");
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
@@ -91,6 +103,7 @@ void reverse() {
 }
 
 void left() {
+  log("left");
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, HIGH);
@@ -99,6 +112,7 @@ void left() {
 }
 
 void right() {
+  log("right");
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
@@ -107,6 +121,7 @@ void right() {
 }
 
 void stoprobot() {
+  log("stop");
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
