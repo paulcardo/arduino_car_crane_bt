@@ -47,7 +47,7 @@ void setup() {
   digitalWrite(LM2, LOW);
   digitalWrite(RM1, LOW);
   digitalWrite(RM2, LOW);
-   // set motor's speed
+  // set motor's speed
   analogWrite(ENA, 75);
   analogWrite(ENB, 75);
   bt.begin(9600);
@@ -139,8 +139,8 @@ void forward() {
   log("forward");
   digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
-  digitalWrite(RM1, LOW);
-  digitalWrite(RM2, HIGH);
+  digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
   delay(20);
 }
 
@@ -148,14 +148,14 @@ void reverse() {
   log("reverse");
   digitalWrite(LM1, LOW);
   digitalWrite(LM2, HIGH);
-  digitalWrite(RM1, HIGH);
-  digitalWrite(RM2, LOW);
+  digitalWrite(RM1, LOW);
+  digitalWrite(RM2, HIGH);
   delay(20);
 }
 
 void left() {
   log("left");
-  digitalWrite(LM1, HIGH);
+  digitalWrite(LM1, LOW);
   digitalWrite(LM2, LOW);
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
@@ -164,10 +164,10 @@ void left() {
 
 void right() {
   log("right");
-  digitalWrite(LM1, LOW);
-  digitalWrite(LM2, HIGH);
+  digitalWrite(LM1, HIGH);
+  digitalWrite(LM2, LOW);
   digitalWrite(RM1, LOW);
-  digitalWrite(RM2, HIGH);
+  digitalWrite(RM2, LOW);
   delay(20);
 }
 
